@@ -13,4 +13,5 @@ export interface SubscriptionRepository {
     update(entry: Subscription): Promise<void>;
 
     delete(id: number): Promise<void>;
-}
+
+    

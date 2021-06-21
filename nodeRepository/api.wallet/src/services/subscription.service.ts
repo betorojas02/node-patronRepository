@@ -23,7 +23,7 @@ export class SubscriptionService {
         if (!originalEntry) {
             this.subscriptionsRepository.store(entry as Subscription);
         } else {
-            throw new ApplicationException('User subscriptions already exists');
+            throw new ApplicationException('User subscription already exists.');
         }
     }
     /**

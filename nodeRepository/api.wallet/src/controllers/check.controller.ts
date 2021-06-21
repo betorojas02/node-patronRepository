@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 @route('/check')
 export class CheckController {
-    constructor(private readonly testService: TestService){
+    constructor(private readonly testService: TestService) {
 
     }
 
@@ -13,11 +13,11 @@ export class CheckController {
     @GET()
     public index(req: Request, res: Response): void {
 
-        const a  = this.testService.get();
-        
+        const a = this.testService.get();
+
         res.send(a);
 
-        
+
     }
 
 }

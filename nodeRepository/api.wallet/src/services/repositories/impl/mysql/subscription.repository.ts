@@ -41,7 +41,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
         const date = new Date();
 
         await connector.execute(
-            'UPDATE wallet_subscription SET user_id = ?, code = ?, amount = ?, cron = ?, update_at = ? where user_id = ?',
+            'UPDATE wallet_subscription SET user_id = ?, code = ?, amount = ?, cron = ?, updated_at = ? where user_id = ?',
             [entry.user_id, entry.code, entry.amount, entry.cron, date, entry.user_id]
         )
     }
@@ -55,8 +55,15 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     }
 
 
-    public async findByUserAndCode(user_id:number, code:string): Promise<Subscription | null>{
-
+    public async findByUserAndCode(user_id: number, code: string): Promise<Subscription | null>{
+        const [rows]: any = await connector.execute(
+            'SELECT * FROM wallet_subscription where user_id = ? and code = ?',
+            [user_id, code]
+        );
+        if (rows.length) {
+            return rows[0] as Subscription;
+        }
+        return null;
     }
 }
 

@@ -16,6 +16,9 @@ import loadContainer from './container';
 
 const app : express.Application = express();
 
+//json support
+
+app.use(express.json());
  //container
  loadContainer(app);
  app.use(loadControllers(
