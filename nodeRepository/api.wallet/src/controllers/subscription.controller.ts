@@ -1,15 +1,13 @@
 import { DELETE, GET, POST, PUT, route } from 'awilix-express';
 import { Request, Response } from 'express';
 import { BaseController } from '../common/controllers/base.controller';
-import { MovementCreateDto } from '../dtos/movement.dto';
-import { MovementService } from '../services/movement.service';
 import { SubscriptionService } from '../services/subscription.service';
 
-@route('/movements')
-export class MovementController extends BaseController {
+@route('/subscriptions')
+export class SubscriptionController extends BaseController {
 
 
-    constructor(private readonly movementService: MovementService) {
+    constructor(private readonly subscriptionService: SubscriptionService) {
 
         super();
     }
@@ -18,7 +16,7 @@ export class MovementController extends BaseController {
     public async all(req: Request, res: Response) {
 
         try {
-            res.send(await this.movementService.all());
+            res.send(await this.subscriptionService.all());
         } catch (error) {
 
             this.handleException(error, res);
@@ -37,7 +35,7 @@ export class MovementController extends BaseController {
             const id = parseInt(req.params.id);
 
 
-            const result = await this.movementService.find(id);
+            const result = await this.subscriptionService.find(id);
             if (result) {
 
                 res.send(result);
@@ -58,11 +56,12 @@ export class MovementController extends BaseController {
     public async store(req: Request, res: Response) {
         try {
 
-            await this.movementService.store({
-                type: req.body.type,
-                amount: req.body.amount, 
-                user_id: req.body.user_id
-            } as MovementCreateDto);
+            await this.subscriptionService.store({
+                user_id: req.body.user_id,
+                code: req.body.code,
+                amount: req.body.amount,
+                cron: req.body.cron
+            } as SubscriptionCreateDto);
             res.status(200).json(req.body);
         } catch (error) {
 
@@ -73,7 +72,43 @@ export class MovementController extends BaseController {
 
 
 
-   
+    //Ex: subscriptions/1
+    @route('/:id')
+    @PUT()
+    public async update(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params.id);
+            await this.subscriptionService.update(id, {
+
+                code: req.body.code,
+                amount: req.body.amount,
+                cron: req.body.cron
+            } as SubscriptionUpdateDto);
+
+            res.status(200).json(req.body);
+
+        } catch (error) {
+
+            this.handleException(error, res);
+        }
+
+    }
+
+
+
+    @route('/:id')
+    @DELETE()
+    public async remove(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params.id);
+
+            res.send(await this.subscriptionService.remove(id));
+
+        } catch (error) {
+
+            this.handleException(error, res);
+        }
+    }
 
 
 

@@ -6,6 +6,7 @@ import { createContainer, asClass } from 'awilix';
 import { scopePerRequest } from 'awilix-express';
 import { MovementRepositoryImpl } from './services/repositories/impl/mysql/movement.repository';
 import { MovementService } from './services/movement.service';
+import { BalanceRepositoryImpl } from './services/repositories/impl/mysql/balance.repository';
 export default (app: express.Application) => {
 
     const container = createContainer({
@@ -17,6 +18,7 @@ export default (app: express.Application) => {
         //repositories
         subscriptionsRepository: asClass(SubscriptionRepositoryImpl).scoped(),
         movementRepository: asClass(MovementRepositoryImpl).scoped(),
+        balanceRepository: asClass(BalanceRepositoryImpl).scoped(),
         //services
 
         movementService: asClass(MovementService).scoped(),
